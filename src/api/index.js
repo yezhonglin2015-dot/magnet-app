@@ -14,9 +14,9 @@ export async function analyzeBasic(gender, imageUris) {
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
+  const timer = setTimeout(() => controller.abort(), 60000);
   try {
-    const res = await fetch(API_BASE + '/api/analyze/basic', {
+    const res = await fetch(API_BASE + '/analyzeBasic', {
       method: 'POST',
       body: form,
       signal: controller.signal,
@@ -33,9 +33,9 @@ export async function analyzeBasic(gender, imageUris) {
 
 export async function analyzeBase(sessionId) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
+  const timer = setTimeout(() => controller.abort(), 60000);
   try {
-    const res = await fetch(API_BASE + '/api/analyze/base', {
+    const res = await fetch(API_BASE + '/analyzeBase', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ session_id: sessionId }),
@@ -53,9 +53,9 @@ export async function analyzeBase(sessionId) {
 
 export async function analyzeTarget(sessionId, types) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
+  const timer = setTimeout(() => controller.abort(), 60000);
   try {
-    const res = await fetch(API_BASE + '/api/analyze/target', {
+    const res = await fetch(API_BASE + '/analyzeTarget', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ session_id: sessionId, types }),

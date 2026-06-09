@@ -1,5 +1,4 @@
-// change to your LAN IP
-export const API_BASE = 'http://10.0.0.241:8000';
+export const API_BASE = 'https://us-central1-magnet-app-df7af.cloudfunctions.net';
 
 export const LEVEL_W = {
   '强': 0.8,
