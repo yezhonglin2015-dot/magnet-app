@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -100,6 +101,19 @@ export default function PaywallScreen({ navigation }) {
 
         {/* Legal */}
         <Text style={styles.legal}>一次性购买，不自动续费 · 次数永久有效</Text>
+
+        {/* Restore purchases */}
+        <Text
+          style={styles.restore}
+          onPress={() =>
+            Alert.alert(
+              '恢复购买',
+              '正式上线后将支持 Apple 购买记录恢复。如有疑问请联系 yezhonglin2015@gmail.com'
+            )
+          }
+        >
+          恢复购买
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -199,5 +213,12 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xs,
     color: colors.sub,
     textAlign: 'center',
+  },
+  restore: {
+    fontSize: 12,
+    color: colors.sub,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
+    paddingTop: 12,
   },
 });

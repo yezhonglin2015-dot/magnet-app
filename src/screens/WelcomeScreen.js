@@ -11,7 +11,21 @@ import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 
 export default function WelcomeScreen({ navigation }) {
-  const { dispatch } = useApp();
+  const { state, dispatch } = useApp();
+
+  const hasSavedReport = !!state.savedReport?.api2;
+
+  function handleResume() {
+    const { savedReport } = state;
+    dispatch({ type: 'SET_GENDER', payload: savedReport.gender });
+    dispatch({ type: 'SET_API2', payload: savedReport.api2 });
+    if (savedReport.api3) {
+      dispatch({ type: 'SET_API3', payload: savedReport.api3 });
+      dispatch({ type: 'SET_PORTRAITS', payload: savedReport.portraits });
+      dispatch({ type: 'SET_TYPES', payload: savedReport.types });
+    }
+    navigation.navigate('Base');
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
@@ -37,6 +51,16 @@ export default function WelcomeScreen({ navigation }) {
               <Text style={styles.gradButtonText}>开始分析</Text>
             </LinearGradient>
           </TouchableOpacity>
+
+          {hasSavedReport && (
+            <TouchableOpacity
+              style={styles.resumeButton}
+              activeOpacity={0.85}
+              onPress={handleResume}
+            >
+              <Text style={styles.resumeText}>继续上次分析</Text>
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity
             style={styles.demoButton}
@@ -95,6 +119,19 @@ const styles = StyleSheet.create({
   gradButtonText: {
     color: '#fff',
     fontWeight: '700',
+    fontSize: fontSize.lg,
+  },
+  resumeButton: {
+    height: 54,
+    borderRadius: radius.full,
+    borderWidth: 1.5,
+    borderColor: colors.accent1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  resumeText: {
+    color: colors.accent1,
+    fontWeight: '600',
     fontSize: fontSize.lg,
   },
   demoButton: {

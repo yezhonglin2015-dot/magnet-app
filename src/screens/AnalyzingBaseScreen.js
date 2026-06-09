@@ -65,6 +65,7 @@ export default function AnalyzingBaseScreen({ navigation }) {
         if (doneRef.current) return;
         doneRef.current = true;
         dispatch({ type: 'SET_API2', payload: data.result });
+        dispatch({ type: 'SAVE_REPORT' });
         navigation.replace('Base');
       })
       .catch(() => {

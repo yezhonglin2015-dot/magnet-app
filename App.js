@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { AppProvider } from './src/context/AppContext';
+import ErrorBoundary from './src/components/ErrorBoundary';
 
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import GenderScreen from './src/screens/GenderScreen';
@@ -21,6 +22,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <ErrorBoundary onReset={() => {}}>
     <SafeAreaProvider>
       <AppProvider>
         <NavigationContainer>
@@ -48,5 +50,6 @@ export default function App() {
         </NavigationContainer>
       </AppProvider>
     </SafeAreaProvider>
+    </ErrorBoundary>
   );
 }

@@ -13,42 +13,60 @@ export async function analyzeBasic(gender, imageUris) {
     });
   }
 
-  const res = await fetch(API_BASE + '/api/analyze/basic', {
-    method: 'POST',
-    body: form,
-  });
-
-  if (!res.ok) {
-    throw new Error('analyzeBasic failed: ' + res.status);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+  try {
+    const res = await fetch(API_BASE + '/api/analyze/basic', {
+      method: 'POST',
+      body: form,
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('analyzeBasic failed: ' + res.status);
+    return res.json();
+  } catch (e) {
+    clearTimeout(timer);
+    if (e.name === 'AbortError') throw new Error('请求超时，请检查网络后重试');
+    throw e;
   }
-
-  return res.json();
 }
 
 export async function analyzeBase(sessionId) {
-  const res = await fetch(API_BASE + '/api/analyze/base', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ session_id: sessionId }),
-  });
-
-  if (!res.ok) {
-    throw new Error('analyzeBase failed: ' + res.status);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+  try {
+    const res = await fetch(API_BASE + '/api/analyze/base', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId }),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('analyzeBase failed: ' + res.status);
+    return res.json();
+  } catch (e) {
+    clearTimeout(timer);
+    if (e.name === 'AbortError') throw new Error('请求超时，请检查网络后重试');
+    throw e;
   }
-
-  return res.json();
 }
 
 export async function analyzeTarget(sessionId, types) {
-  const res = await fetch(API_BASE + '/api/analyze/target', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ session_id: sessionId, types }),
-  });
-
-  if (!res.ok) {
-    throw new Error('analyzeTarget failed: ' + res.status);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+  try {
+    const res = await fetch(API_BASE + '/api/analyze/target', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, types }),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('analyzeTarget failed: ' + res.status);
+    return res.json();
+  } catch (e) {
+    clearTimeout(timer);
+    if (e.name === 'AbortError') throw new Error('请求超时，请检查网络后重试');
+    throw e;
   }
-
-  return res.json();
 }
