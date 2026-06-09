@@ -43,26 +43,29 @@ export default function UploadScreen({ navigation }) {
           <Text style={styles.backText}>←</Text>
         </TouchableOpacity>
 
-        <Text style={styles.title}>上传你的 IG 主页</Text>
-        <Text style={styles.sub}>截 3 张主页截图，选顺序：封面 · 中图 · 结尾</Text>
+        <Text style={styles.title}>上传你的展示面</Text>
+        <Text style={styles.sub}>1~3 张截图，图越多分析越准</Text>
+        <Text style={styles.tip}>IG 主页 · 朋友圈 · 小红书 · 任何你的展示面都可以</Text>
 
         <View style={styles.slots}>
           {[0, 1, 2].map((i) => (
             <View key={i} style={styles.slotWrapper}>
               <SlotUpload
+                index={i}
                 uri={state.images[i]}
                 onSelect={() => handleSelect(i)}
+                optional={i > 0}
               />
             </View>
           ))}
         </View>
 
-        <Text style={styles.hint}>已选 {selectedCount}/3 张</Text>
+        <Text style={styles.hint}>已选 {selectedCount} 张{selectedCount === 0 ? '，至少上传 1 张' : ''}</Text>
 
         <TouchableOpacity
-          activeOpacity={allSelected ? 0.8 : 1}
-          onPress={allSelected ? () => navigation.navigate('AnalyzingBasic') : undefined}
-          style={[styles.btnWrapper, !allSelected && styles.btnDisabled]}
+          activeOpacity={selectedCount >= 1 ? 0.8 : 1}
+          onPress={selectedCount >= 1 ? () => navigation.navigate('AnalyzingBasic') : undefined}
+          style={[styles.btnWrapper, selectedCount < 1 && styles.btnDisabled]}
         >
           <LinearGradient
             colors={grad}
@@ -105,6 +108,12 @@ const styles = StyleSheet.create({
   sub: {
     fontSize: fontSize.sm,
     color: colors.sub,
+    marginBottom: spacing.xs,
+  },
+  tip: {
+    fontSize: fontSize.xs,
+    color: colors.sub,
+    opacity: 0.6,
     marginBottom: spacing.md,
   },
   slots: {

@@ -2,18 +2,11 @@ import React from 'react';
 import { TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
 import { colors, radius, fontSize, spacing } from '../constants/theme';
 
-const SLOT_LABELS = ['封面', '中图', '结尾'];
-
-export default function SlotUpload({ index, uri, onSelect }) {
-  const label = SLOT_LABELS[index] || '';
-
+export default function SlotUpload({ index, uri, onSelect, optional }) {
   if (uri) {
     return (
       <TouchableOpacity style={styles.slot} onPress={onSelect} activeOpacity={0.85}>
         <Image source={{ uri }} style={styles.image} resizeMode="cover" />
-        <View style={styles.labelOverlay}>
-          <Text style={styles.labelText}>{label}</Text>
-        </View>
       </TouchableOpacity>
     );
   }
@@ -21,7 +14,7 @@ export default function SlotUpload({ index, uri, onSelect }) {
   return (
     <TouchableOpacity style={[styles.slot, styles.emptySlot]} onPress={onSelect} activeOpacity={0.7}>
       <Text style={styles.plusText}>+</Text>
-      <Text style={styles.emptyLabel}>{label}</Text>
+      {optional && <Text style={styles.emptyLabel}>可选</Text>}
     </TouchableOpacity>
   );
 }

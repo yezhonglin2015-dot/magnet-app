@@ -4,14 +4,15 @@ export async function analyzeBasic(gender, imageUris) {
   const form = new FormData();
   form.append('gender', gender);
 
+  // 只上传非空的图片（1~3 张）
   const slots = ['img1', 'img2', 'img3'];
-  for (let i = 0; i < 3; i++) {
+  imageUris.filter(Boolean).forEach((uri, i) => {
     form.append(slots[i], {
-      uri: imageUris[i],
+      uri,
       name: 'img' + (i + 1) + '.jpg',
       type: 'image/jpeg',
     });
-  }
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 60000);
