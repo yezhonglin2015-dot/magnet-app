@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.magnetig.app",
+      "bundleIdentifier": "com.brianyop.magnet",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Magnet 需要访问相册来上传你的 IG 主页截图",
         "NSPhotoLibraryAddUsageDescription": "Magnet 需要保存分析结果到相册",
@@ -21,7 +21,7 @@
       }
     },
     "android": {
-      "package": "com.magnetig.app",
+      "package": "com.brianyop.magnet",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0d0d0d"
