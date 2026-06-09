@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "Magnet",
+    "slug": "magnet-ig",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0d0d0d"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.magnetig.app",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Magnet 需要访问相册来上传你的 IG 主页截图",
+        "NSPhotoLibraryAddUsageDescription": "Magnet 需要保存分析结果到相册",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.magnetig.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0d0d0d"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Magnet 需要访问你的相册来上传 IG 截图"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6c6ffa14-5967-42fc-87b2-5b6895264ea4"
+      }
+    },
+    "owner": "brianyop"
+  }
+}
