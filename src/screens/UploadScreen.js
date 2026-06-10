@@ -18,7 +18,6 @@ export default function UploadScreen({ navigation }) {
   const { state, dispatch } = useApp();
 
   const selectedCount = state.images.filter(v => v !== null).length;
-  const allSelected = state.images.every(v => v !== null);
 
   const handleSelect = async (i) => {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();

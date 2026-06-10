@@ -12,12 +12,6 @@ import { analyzeBasic } from '../api/index';
 import { colors, spacing, fontSize } from '../constants/theme';
 import { ANALYZING_TEXTS } from '../constants/config';
 
-const MOCK_API1 = {
-  氛围感: { level: '中上' },
-  视觉冲击: { level: '中' },
-  钩子: '你的展示面有一种低调的质感，感觉背后还藏着东西——完整分析才知道你的人设是什么。',
-};
-
 export default function AnalyzingBasicScreen({ navigation }) {
   const { state, dispatch } = useApp();
   const [textIndex, setTextIndex] = useState(0);
@@ -52,25 +46,16 @@ export default function AnalyzingBasicScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    if (state.demoMode) {
-      const timer = setTimeout(() => {
-        dispatch({ type: 'SET_API1', payload: MOCK_API1 });
-        dispatch({ type: 'SET_SESSION', payload: 'demo-session-id' });
+    analyzeBasic(state.gender, state.images.filter(Boolean))
+      .then(data => {
+        dispatch({ type: 'SET_SESSION', payload: data.session_id });
+        dispatch({ type: 'SET_API1', payload: data.result });
         navigation.replace('Basic');
-      }, 1800);
-      return () => clearTimeout(timer);
-    } else {
-      analyzeBasic(state.gender, state.images.filter(Boolean))
-        .then(data => {
-          dispatch({ type: 'SET_SESSION', payload: data.session_id });
-          dispatch({ type: 'SET_API1', payload: data.result });
-          navigation.replace('Basic');
-        })
-        .catch(() => {
-          Alert.alert('分析失败', '请检查网络连接后重试');
-          navigation.goBack();
-        });
-    }
+      })
+      .catch(() => {
+        Alert.alert('分析失败', '请检查网络连接后重试');
+        navigation.goBack();
+      });
   }, []);
 
   return (

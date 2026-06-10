@@ -18,7 +18,6 @@ const initialState = {
   selectedTypes: [],
   userId: null,
   credits: 0,
-  demoMode: false,
   savedReport: null,
 };
 
@@ -57,9 +56,6 @@ function reducer(state, action) {
     // credits 真相源 = 服务端，覆盖式设置
     case 'SET_CREDITS':
       return { ...state, credits: action.payload };
-
-    case 'SET_DEMO':
-      return { ...state, demoMode: action.payload };
 
     case 'SAVE_REPORT':
       return {
