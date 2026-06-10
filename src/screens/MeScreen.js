@@ -52,6 +52,24 @@ export default function MeScreen({ navigation }) {
     );
   }
 
+  function clearData() {
+    Alert.alert(
+      '清除数据',
+      '将清除本地保存的报告记录。\n已购买的次数绑定在服务端，不受影响。',
+      [
+        { text: '取消', style: 'cancel' },
+        {
+          text: '清除',
+          style: 'destructive',
+          onPress: () => {
+            dispatch({ type: 'CLEAR_SAVED_REPORT' });
+            Alert.alert('已清除', '本地报告记录已清空。');
+          },
+        },
+      ]
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
@@ -108,6 +126,8 @@ export default function MeScreen({ navigation }) {
           <Row label="隐私政策" onPress={() => openUrl(PRIVACY_URL)} />
           <Divider />
           <Row label="服务条款" onPress={() => openUrl(TERMS_URL)} />
+          <Divider />
+          <Row label="清除数据" danger onPress={clearData} />
         </View>
 
         <Text style={styles.version}>Magnet v{version}</Text>
@@ -116,10 +136,10 @@ export default function MeScreen({ navigation }) {
   );
 }
 
-function Row({ label, onPress }) {
+function Row({ label, onPress, danger }) {
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.row}>
-      <Text style={styles.rowLabel}>{label}</Text>
+      <Text style={[styles.rowLabel, danger && styles.rowDanger]}>{label}</Text>
       <Text style={styles.chevron}>›</Text>
     </TouchableOpacity>
   );
@@ -199,6 +219,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   rowLabel: { fontSize: fontSize.md, color: colors.text },
+  rowDanger: { color: colors.bad },
   chevron: { fontSize: 22, color: colors.sub },
   divider: { height: 1, backgroundColor: colors.border },
   version: {
