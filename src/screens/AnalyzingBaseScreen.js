@@ -14,7 +14,7 @@ import { ANALYZING_TEXTS } from '../constants/config';
 const CYCLE_TEXTS = [
   '逐张细看你的展示面...',
   '解读7个维度...',
-  '提炼你的人设...',
+  '提炼它的气质调性...',
   '生成专属建议...',
 ];
 

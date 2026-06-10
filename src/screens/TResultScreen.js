@@ -36,7 +36,7 @@ export default function TResultScreen({ navigation }) {
         {/* Portrait section */}
         {portraits && portraits.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>目标画像</Text>
+            <Text style={styles.sectionTitle}>想要吸引的类型</Text>
             {portraits.map((p, i) => (
               <View key={i} style={styles.card}>
                 <Text style={styles.portraitType}>{p.type}</Text>
@@ -80,31 +80,29 @@ export default function TResultScreen({ navigation }) {
           </View>
         )}
 
-        {/* 针对加减法 */}
-        {(jia.length > 0 || jian.length > 0) && (
+        {/* 针对加分 */}
+        {jia.length > 0 && (
           <View style={styles.section}>
-            {jia.length > 0 && (
-              <View style={styles.card}>
-                <Text style={styles.cardHeader}>✨ 针对加分</Text>
-                {jia.map((item, i) => (
-                  <View key={i} style={styles.listRow}>
-                    <Text style={styles.dot}>+</Text>
-                    <Text style={styles.listText}>{item}</Text>
-                  </View>
-                ))}
+            <Text style={styles.plusTitle}>✨ 加分方向</Text>
+            {jia.map((item, i) => (
+              <View key={i} style={styles.listItem}>
+                <Text style={styles.plusBullet}>＋</Text>
+                <Text style={styles.itemText}>{item}</Text>
               </View>
-            )}
-            {jian.length > 0 && (
-              <View style={styles.card}>
-                <Text style={styles.cardHeader}>🍃 针对先收</Text>
-                {jian.map((item, i) => (
-                  <View key={i} style={styles.listRow}>
-                    <Text style={styles.dot}>-</Text>
-                    <Text style={styles.listText}>{item}</Text>
-                  </View>
-                ))}
+            ))}
+          </View>
+        )}
+
+        {/* 针对先收 */}
+        {jian.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.minusTitle}>🍃 先收一收</Text>
+            {jian.map((item, i) => (
+              <View key={i} style={styles.listItem}>
+                <Text style={styles.minusBullet}>－</Text>
+                <Text style={styles.itemText}>{item}</Text>
               </View>
-            )}
+            ))}
           </View>
         )}
 
@@ -199,9 +197,9 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   body: {
-    fontSize: fontSize.sm,
+    fontSize: fontSize.md,
     color: colors.text,
-    lineHeight: 22,
+    lineHeight: 26,
   },
   listRow: {
     flexDirection: 'row',
@@ -227,11 +225,42 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: 4,
   },
-  cardHeader: {
-    fontSize: fontSize.sm,
-    fontWeight: '700',
+  plusTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: '800',
+    color: colors.good,
+    marginBottom: spacing.md,
+  },
+  minusTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: '800',
+    color: colors.bad,
+    marginBottom: spacing.md,
+  },
+  listItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: spacing.md,
+  },
+  plusBullet: {
+    fontSize: fontSize.md,
+    fontWeight: '800',
+    color: colors.good,
+    marginRight: spacing.sm,
+    lineHeight: 26,
+  },
+  minusBullet: {
+    fontSize: fontSize.md,
+    fontWeight: '800',
+    color: colors.bad,
+    marginRight: spacing.sm,
+    lineHeight: 26,
+  },
+  itemText: {
+    flex: 1,
+    fontSize: fontSize.md,
     color: colors.text,
-    marginBottom: spacing.sm,
+    lineHeight: 26,
   },
   ctaWrapper: {
     marginTop: spacing.sm,

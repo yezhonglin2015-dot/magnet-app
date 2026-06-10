@@ -28,14 +28,37 @@ export default function TargetScreen({ navigation }) {
   function toggleType(type) {
     if (localSel.includes(type)) {
       setLocalSel(prev => prev.filter(t => t !== type));
-    } else if (localSel.length >= 3) {
-      Alert.alert('最多选3个', '越聚焦越有力');
+    } else if (localSel.length >= 2) {
+      Alert.alert('最多选 2 个', '别贪心，越聚焦越有力');
     } else {
       setLocalSel(prev => [...prev, type]);
     }
   }
 
   function handleConfirm() {
+    // 已经做过一次针对分析 → 这是重选，要再消耗 1 次
+    const isRedo = !!state.api3;
+    if (isRedo) {
+      if (state.credits <= 0) {
+        Alert.alert('重新选择需要 1 次', '换一组类型会重新生成分析，消耗 1 次额度', [
+          { text: '再想想', style: 'cancel' },
+          { text: '去获取', onPress: () => navigation.navigate('Paywall') },
+        ]);
+        return;
+      }
+      Alert.alert('重新选择', '换一组类型会消耗 1 次额度，确定吗？', [
+        { text: '取消', style: 'cancel' },
+        {
+          text: '确定',
+          onPress: () => {
+            dispatch({ type: 'USE_CREDIT' });
+            dispatch({ type: 'SET_TYPES', payload: localSel });
+            navigation.navigate('AnalyzingTarget');
+          },
+        },
+      ]);
+      return;
+    }
     dispatch({ type: 'SET_TYPES', payload: localSel });
     navigation.navigate('AnalyzingTarget');
   }
@@ -65,7 +88,7 @@ export default function TargetScreen({ navigation }) {
 
       <View style={styles.titleArea}>
         <Text style={styles.title}>想吸引的类型</Text>
-        <Text style={styles.sub}>选越聚焦越有力 · 最多 3 个</Text>
+        <Text style={styles.sub}>最多选 2 个 · 温馨提示：别贪心，越聚焦越有力</Text>
       </View>
 
       <FlatList

@@ -75,6 +75,8 @@ export default function AnalyzingTargetScreen({ navigation }) {
         })
         .catch(() => {
           clearInterval(cycleRef.current);
+          // 若是重选（已有旧 api3），失败时退回消耗的 1 次
+          if (state.api3) dispatch({ type: 'ADD_CREDITS', payload: 1 });
           Alert.alert('分析失败', '请重试');
           navigation.goBack();
         });

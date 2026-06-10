@@ -1,5 +1,9 @@
 export const API_BASE = 'https://us-central1-magnet-app-df7af.cloudfunctions.net';
 
+export const PRIVACY_URL = 'https://yezhonglin2015-dot.github.io/magnet-app/privacy.html';
+export const TERMS_URL = 'https://yezhonglin2015-dot.github.io/magnet-app/terms.html';
+export const SUPPORT_EMAIL = 'yezhonglin2015@gmail.com';
+
 export const LEVEL_W = {
   '强': 0.8,
   '中上': 0.65,
@@ -36,7 +40,7 @@ export const TYPE_IMAGES = {
 
 export const ANALYZING_TEXTS = [
   '正在解读你的展示面...',
-  '发现你的人设特质...',
+  '读懂它的气质调性...',
   '评估磁力维度...',
   '整理建议中...',
 ];

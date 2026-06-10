@@ -14,7 +14,6 @@ export default function DimBar({ label, level }) {
         <View style={styles.track}>
           <View style={[styles.fill, { width: fillPercent }]} />
         </View>
-        <Text style={styles.levelText}>{level}</Text>
       </View>
     </View>
   );
@@ -48,11 +47,5 @@ const styles = StyleSheet.create({
     height: 6,
     backgroundColor: colors.accent1,
     borderRadius: 3,
-  },
-  levelText: {
-    color: colors.sub,
-    fontSize: fontSize.xs,
-    width: 28,
-    textAlign: 'right',
   },
 });

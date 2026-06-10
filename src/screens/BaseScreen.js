@@ -54,17 +54,23 @@ export default function BaseScreen({ navigation }) {
 
         {/* Plus direction */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>✨ 加分方向</Text>
+          <Text style={styles.plusTitle}>✨ 加分方向</Text>
           {(api2?.加 || []).map((t, i) => (
-            <Text key={i} style={styles.plusItem}>· {t}</Text>
+            <View key={i} style={styles.listItem}>
+              <Text style={styles.plusBullet}>＋</Text>
+              <Text style={styles.itemText}>{t}</Text>
+            </View>
           ))}
         </View>
 
         {/* Minus direction */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🍃 先收一收</Text>
+          <Text style={styles.minusTitle}>🍃 先收一收</Text>
           {(api2?.减 || []).map((t, i) => (
-            <Text key={i} style={styles.minusItem}>· {t}</Text>
+            <View key={i} style={styles.listItem}>
+              <Text style={styles.minusBullet}>－</Text>
+              <Text style={styles.itemText}>{t}</Text>
+            </View>
           ))}
         </View>
 
@@ -142,19 +148,44 @@ const styles = StyleSheet.create({
   narrative: {
     fontSize: fontSize.md,
     color: colors.text,
-    lineHeight: 24,
+    lineHeight: 26,
   },
-  plusItem: {
-    fontSize: fontSize.md,
+  plusTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: '800',
     color: colors.good,
-    lineHeight: 24,
-    marginBottom: spacing.xs,
+    marginBottom: spacing.md,
   },
-  minusItem: {
+  minusTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: '800',
+    color: colors.bad,
+    marginBottom: spacing.md,
+  },
+  listItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: spacing.md,
+  },
+  plusBullet: {
     fontSize: fontSize.md,
-    color: colors.sub,
-    lineHeight: 24,
-    marginBottom: spacing.xs,
+    fontWeight: '800',
+    color: colors.good,
+    marginRight: spacing.sm,
+    lineHeight: 26,
+  },
+  minusBullet: {
+    fontSize: fontSize.md,
+    fontWeight: '800',
+    color: colors.bad,
+    marginRight: spacing.sm,
+    lineHeight: 26,
+  },
+  itemText: {
+    flex: 1,
+    fontSize: fontSize.md,
+    color: colors.text,
+    lineHeight: 26,
   },
   retestNote: {
     fontSize: fontSize.sm,

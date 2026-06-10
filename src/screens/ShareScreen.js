@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View,
   Text,
+  Image,
   ScrollView,
   TouchableOpacity,
   Alert,
@@ -16,9 +17,16 @@ export default function ShareScreen({ navigation }) {
   const { state, dispatch } = useApp();
 
   const personaName = state.api2?.人设?.name || '';
-  const selectedTypes = state.selectedTypes || [];
+  const tagline = state.api2?.人设?.tagline || '';
+  const firstImage = state.images?.[0] || null;
+
+  // 取叙事前 1~2 句做简短总结
   const lueshi = state.api2?.叙事 || '';
-  const quote = lueshi.length > 80 ? lueshi.slice(0, 80) + '…' : lueshi;
+  const summary = lueshi
+    .split(/(?<=[。！？])/)
+    .slice(0, 2)
+    .join('')
+    .trim();
 
   function handleShare() {
     Alert.alert('截图分享', '截图这个页面，发给朋友或存到相册~');
@@ -38,30 +46,44 @@ export default function ShareScreen({ navigation }) {
         </TouchableOpacity>
 
         {/* Page title */}
-        <Text style={styles.pageTitle}>分析报告</Text>
+        <Text style={styles.pageTitle}>分享卡</Text>
 
-        {/* Report card */}
+        {/* Share card */}
         <View style={styles.reportCard}>
-          {/* Persona name */}
-          {personaName ? (
-            <Text style={styles.personaName}>{personaName}</Text>
-          ) : null}
-
-          {/* Selected type tags */}
-          {selectedTypes.length > 0 && (
-            <View style={styles.tagRow}>
-              {selectedTypes.map((t, i) => (
-                <View key={i} style={styles.tag}>
-                  <Text style={styles.tagText}>#{t}</Text>
-                </View>
-              ))}
+          {/* 用户第一张截图 */}
+          {firstImage ? (
+            <View style={styles.imageWrap}>
+              <Image source={{ uri: firstImage }} style={styles.image} resizeMode="cover" />
+              <LinearGradient
+                colors={['transparent', 'rgba(0,0,0,0.85)']}
+                style={styles.imageFade}
+              />
             </View>
-          )}
-
-          {/* Quote */}
-          {quote ? (
-            <Text style={styles.quote}>{quote}</Text>
           ) : null}
+
+          {/* 内容区 */}
+          <View style={styles.cardBody}>
+            {/* 标题（人设名） */}
+            {personaName ? (
+              <Text style={styles.personaName}>{personaName}</Text>
+            ) : null}
+
+            {/* tagline */}
+            {tagline ? (
+              <Text style={styles.tagline}>{tagline}</Text>
+            ) : null}
+
+            {/* 分隔线 */}
+            <View style={styles.divider} />
+
+            {/* 简短总结 */}
+            {summary ? (
+              <Text style={styles.summary}>{summary}</Text>
+            ) : null}
+
+            {/* 品牌水印 */}
+            <Text style={styles.brand}>Magnet · 展示面磁力</Text>
+          </View>
         </View>
 
         {/* Share button */}
@@ -111,39 +133,62 @@ const styles = StyleSheet.create({
   },
   reportCard: {
     backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    padding: spacing.md,
+    borderRadius: radius.xl,
+    overflow: 'hidden',
     marginBottom: spacing.lg,
+    // 卡片阴影，更精致
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  imageWrap: {
+    width: '100%',
+    aspectRatio: 4 / 5,
+    position: 'relative',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  imageFade: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '40%',
+  },
+  cardBody: {
+    padding: spacing.lg,
   },
   personaName: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '700',
-    color: '#e85d8a',
-    marginBottom: spacing.md,
+    color: colors.accent1,
+    marginBottom: 6,
   },
-  tagRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.xs,
-    marginBottom: spacing.md,
+  tagline: {
+    fontSize: fontSize.md,
+    color: colors.text,
+    lineHeight: 24,
   },
-  tag: {
-    backgroundColor: '#2a2a2a',
-    borderRadius: radius.full,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    marginRight: spacing.xs,
-    marginBottom: spacing.xs,
+  divider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginVertical: spacing.md,
   },
-  tagText: {
+  summary: {
     fontSize: fontSize.sm,
     color: colors.sub,
+    lineHeight: 24,
   },
-  quote: {
-    fontSize: fontSize.sm,
+  brand: {
+    fontSize: fontSize.xs,
     color: colors.sub,
-    fontStyle: 'italic',
-    lineHeight: 22,
+    opacity: 0.6,
+    marginTop: spacing.lg,
+    letterSpacing: 1,
   },
   ctaWrapper: {
     marginBottom: spacing.md,

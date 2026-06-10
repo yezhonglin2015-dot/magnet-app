@@ -5,13 +5,14 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 
 export default function WelcomeScreen({ navigation }) {
   const { state, dispatch } = useApp();
+  const insets = useSafeAreaInsets();
 
   const hasSavedReport = !!state.savedReport?.api2;
 
@@ -29,6 +30,13 @@ export default function WelcomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <TouchableOpacity
+        style={[styles.meEntry, { top: insets.top + spacing.xs }]}
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('Me')}
+      >
+        <Text style={styles.meText}>我的</Text>
+      </TouchableOpacity>
       <View style={styles.inner}>
         <View style={styles.centerBlock}>
           <Text style={styles.title}>Magnet</Text>
@@ -61,17 +69,6 @@ export default function WelcomeScreen({ navigation }) {
               <Text style={styles.resumeText}>继续上次分析</Text>
             </TouchableOpacity>
           )}
-
-          <TouchableOpacity
-            style={styles.demoButton}
-            activeOpacity={0.7}
-            onPress={() => {
-              dispatch({ type: 'SET_DEMO', payload: true });
-              navigation.navigate('Gender');
-            }}
-          >
-            <Text style={styles.demoText}>体验 Demo 模式</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -82,6 +79,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg,
+  },
+  meEntry: {
+    position: 'absolute',
+    right: spacing.lg,
+    zIndex: 10,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+  },
+  meText: {
+    fontSize: fontSize.md,
+    color: colors.sub,
+    fontWeight: '600',
   },
   inner: {
     flex: 1,
@@ -133,13 +142,5 @@ const styles = StyleSheet.create({
     color: colors.accent1,
     fontWeight: '600',
     fontSize: fontSize.lg,
-  },
-  demoButton: {
-    alignItems: 'center',
-    paddingVertical: spacing.sm,
-  },
-  demoText: {
-    color: colors.sub,
-    fontSize: fontSize.sm,
   },
 });
