@@ -1,17 +1,15 @@
-// StoreKit 购买流程（react-native-iap v15）。
+// StoreKit 购买流程（react-native-iap v12 · 老架构稳定版）。
 // 流程：buyCredits(sku) → Apple 弹窗付款 → purchaseUpdatedListener 回调
-//   → getReceiptDataIOS() 拿 base64 收据 → 后端 verifyPurchase 发次数 → finishTransaction。
-// 收据验证在服务端做，前端不自己加余额。
+//   → purchase.transactionReceipt 拿 base64 收据 → 后端 verifyPurchase 发次数 → finishTransaction。
+// 收据验证在服务端做（Apple legacy verifyReceipt），前端不自己加余额。
 import {
   initConnection,
   endConnection,
+  getProducts,
   requestPurchase,
   finishTransaction,
   purchaseUpdatedListener,
   purchaseErrorListener,
-  fetchProducts,
-  getReceiptDataIOS,
-  isUserCancelledError,
 } from 'react-native-iap';
 import { verifyPurchase } from '../api';
 import { PLANS } from '../constants/config';
@@ -34,7 +32,7 @@ export async function initIAP(userId, onCredits, onError) {
 
   updateSub = purchaseUpdatedListener(async (purchase) => {
     try {
-      const receipt = await getReceiptDataIOS();
+      const receipt = purchase.transactionReceipt;
       if (!receipt) throw new Error('拿不到购买凭证');
       const r = await verifyPurchase(userId, receipt);
       await finishTransaction({ purchase, isConsumable: true });
@@ -46,20 +44,20 @@ export async function initIAP(userId, onCredits, onError) {
   });
 
   errorSub = purchaseErrorListener((e) => {
-    if (isUserCancelledError(e)) return;
+    if (e.code === 'E_USER_CANCELLED') return;
     onError?.(e.message || '购买失败，请重试');
   });
 
   // 预拉商品（Apple 要求先拉到商品才能买）
   try {
-    await fetchProducts({ skus: PLANS.map((p) => p.sku), type: 'in-app' });
+    await getProducts({ skus: PLANS.map((p) => p.sku) });
   } catch (e) {
     // 拉不到不阻塞，买时再报
   }
 }
 
 export async function buyCredits(sku) {
-  await requestPurchase({ request: { apple: { sku } }, type: 'in-app' });
+  await requestPurchase({ sku });
   // 结果走 purchaseUpdatedListener，这里不返回
 }
 

@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -37,8 +36,7 @@
         {
           "photosPermission": "Magnet 需要访问你的相册来上传 IG 截图"
         }
-      ],
-      "react-native-iap"
+      ]
     ],
     "extra": {
       "eas": {
