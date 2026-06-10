@@ -78,7 +78,15 @@ export default function ShareScreen({ navigation }) {
             {tagline ? <Text style={styles.tagline} numberOfLines={2}>{tagline}</Text> : null}
             <View style={styles.divider} />
             {summary ? <Text style={styles.summary} numberOfLines={3}>{summary}</Text> : null}
-            <Text style={styles.brand}>Magnet · 展示面磁力</Text>
+
+            {/* 品牌行：图标 + 名 + 勾人 CTA（二维码上线后再加） */}
+            <View style={styles.brandRow}>
+              <Image source={require('../../assets/icon.png')} style={styles.brandLogo} />
+              <View style={styles.brandTextWrap}>
+                <Text style={styles.brandName}>Magnet · 展示面磁力</Text>
+                <Text style={styles.brandCta}>你的展示面，在替你吸引谁？</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -176,12 +184,31 @@ const styles = StyleSheet.create({
     color: colors.sub,
     lineHeight: 22,
   },
-  brand: {
-    fontSize: fontSize.xs,
-    color: colors.sub,
-    opacity: 0.6,
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     marginTop: spacing.md,
+  },
+  brandLogo: {
+    width: 34,
+    height: 34,
+    borderRadius: 8,
+  },
+  brandTextWrap: {
+    flex: 1,
+  },
+  brandName: {
+    fontSize: fontSize.xs,
+    color: colors.text,
+    fontWeight: '700',
     letterSpacing: 1,
+  },
+  brandCta: {
+    fontSize: fontSize.xs,
+    color: colors.accent1,
+    fontWeight: '600',
+    marginTop: 2,
   },
   actions: {
     gap: spacing.sm,
