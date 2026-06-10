@@ -36,7 +36,7 @@ const MOCK_API2 = {
 };
 
 export default function AnalyzingBaseScreen({ navigation }) {
-  const { state, dispatch } = useApp();
+  const { state, dispatch, refreshCredits } = useApp();
   const [textIndex, setTextIndex] = useState(0);
   const intervalRef = useRef(null);
   const doneRef = useRef(false);
@@ -60,18 +60,19 @@ export default function AnalyzingBaseScreen({ navigation }) {
       return () => clearTimeout(t);
     }
 
-    analyzeBase(state.sessionId)
+    analyzeBase(state.sessionId, state.userId)
       .then((data) => {
         if (doneRef.current) return;
         doneRef.current = true;
         dispatch({ type: 'SET_API2', payload: data.result });
         dispatch({ type: 'SAVE_REPORT' });
+        refreshCredits(); // 服务端已扣 1 次，同步真实余额
         navigation.replace('Base');
       })
       .catch(() => {
         if (doneRef.current) return;
         doneRef.current = true;
-        dispatch({ type: 'ADD_CREDITS', payload: 1 });
+        refreshCredits(); // 服务端扣费失败会自动退回，拉真实余额
         Alert.alert('分析失败', '请重试');
         navigation.goBack();
       });

@@ -10,32 +10,38 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useApp } from '../context/AppContext';
+import { PLANS } from '../constants/config';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 
-const PLANS = [
-  { price: '$4.99', desc: '1 次完整分析', credits: 1, tag: null },
-  { price: '$9.99', desc: '10 次 · 约 $1 / 次', credits: 10, tag: '最划算' },
-  { price: '$29.99', desc: '50 次 · 约 $0.6 / 次', credits: 50, tag: null },
-];
-
 export default function PaywallScreen({ navigation }) {
-  const { state, dispatch } = useApp();
+  const { state, buy } = useApp();
   const [selectedPlan, setSelectedPlan] = useState(1);
+  const [buying, setBuying] = useState(false);
 
   const hasCredits = state.credits > 0;
 
-  const handlePress = () => {
+  const handlePress = async () => {
     if (hasCredits) {
-      dispatch({ type: 'USE_CREDIT' });
+      // 扣费在服务端（analyzeBase 带 user_id），这里不本地扣
       navigation.navigate('AnalyzingBase');
-    } else {
-      dispatch({ type: 'ADD_CREDITS', payload: PLANS[selectedPlan].credits });
-      dispatch({ type: 'USE_CREDIT' });
+      return;
+    }
+    if (buying) return;
+    setBuying(true);
+    try {
+      await buy(PLANS[selectedPlan].sku);
+      // 购买+服务端验证成功，credits 已到账
       navigation.navigate('AnalyzingBase');
+    } catch (e) {
+      Alert.alert('购买未完成', e.message || '请重试');
+    } finally {
+      setBuying(false);
     }
   };
 
-  const buttonLabel = hasCredits
+  const buttonLabel = buying
+    ? '正在购买…'
+    : hasCredits
     ? `使用 1 次 · 解锁完整分析`
     : `购买并解锁 ${PLANS[selectedPlan].price}`;
 
@@ -74,11 +80,11 @@ export default function PaywallScreen({ navigation }) {
             >
               <View style={styles.planLeft}>
                 <Text style={styles.planPrice}>{plan.price}</Text>
-                <Text style={styles.planDesc}>{plan.desc}</Text>
+                <Text style={styles.planDesc}>{plan.note}</Text>
               </View>
-              {plan.tag && (
+              {plan.best && (
                 <View style={styles.tagBadge}>
-                  <Text style={styles.tagText}>{plan.tag}</Text>
+                  <Text style={styles.tagText}>最划算</Text>
                 </View>
               )}
             </TouchableOpacity>

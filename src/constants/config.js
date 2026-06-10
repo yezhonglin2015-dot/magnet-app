@@ -4,6 +4,19 @@ export const PRIVACY_URL = 'https://yezhonglin2015-dot.github.io/magnet-app/priv
 export const TERMS_URL = 'https://yezhonglin2015-dot.github.io/magnet-app/terms.html';
 export const SUPPORT_EMAIL = 'yezhonglin2015@gmail.com';
 
+// App Store Connect 里建好的 3 个 Consumable（ID 占位符已拍板不重建）
+export const PRODUCT_IDS = {
+  credits1: 'com.yourapp.magnet.credits1',
+  credits10: 'com.yourapp.magnet.credits10',
+  credits50: 'com.yourapp.magnet.credits50',
+};
+
+export const PLANS = [
+  { sku: PRODUCT_IDS.credits1, credits: 1, price: '$4.99', note: '1 次完整分析' },
+  { sku: PRODUCT_IDS.credits10, credits: 10, price: '$9.99', note: '10 次 · 约 $1 / 次', best: true },
+  { sku: PRODUCT_IDS.credits50, credits: 50, price: '$29.99', note: '50 次 · 约 $0.6 / 次' },
+];
+
 export const LEVEL_W = {
   '强': 0.8,
   '中上': 0.65,

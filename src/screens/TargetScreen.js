@@ -36,29 +36,7 @@ export default function TargetScreen({ navigation }) {
   }
 
   function handleConfirm() {
-    // 已经做过一次针对分析 → 这是重选，要再消耗 1 次
-    const isRedo = !!state.api3;
-    if (isRedo) {
-      if (state.credits <= 0) {
-        Alert.alert('重新选择需要 1 次', '换一组类型会重新生成分析，消耗 1 次额度', [
-          { text: '再想想', style: 'cancel' },
-          { text: '去获取', onPress: () => navigation.navigate('Paywall') },
-        ]);
-        return;
-      }
-      Alert.alert('重新选择', '换一组类型会消耗 1 次额度，确定吗？', [
-        { text: '取消', style: 'cancel' },
-        {
-          text: '确定',
-          onPress: () => {
-            dispatch({ type: 'USE_CREDIT' });
-            dispatch({ type: 'SET_TYPES', payload: localSel });
-            navigation.navigate('AnalyzingTarget');
-          },
-        },
-      ]);
-      return;
-    }
+    // 针对分析在同一次诊断内免费（含重选），扣费只发生在大基础②
     dispatch({ type: 'SET_TYPES', payload: localSel });
     navigation.navigate('AnalyzingTarget');
   }

@@ -36,7 +36,8 @@
         {
           "photosPermission": "Magnet 需要访问你的相册来上传 IG 截图"
         }
-      ]
+      ],
+      "react-native-iap"
     ],
     "extra": {
       "eas": {

@@ -1,7 +1,10 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserId } from '../services/userId';
+import { initIAP, buyCredits, teardownIAP } from '../services/iap';
+import { fetchCredits } from '../api';
 
-const STORAGE_KEY = 'magnet_credits';
 const REPORT_KEY = 'magnet_last_report';
 
 const initialState = {
@@ -13,6 +16,7 @@ const initialState = {
   api3: null,
   portraits: null,
   selectedTypes: [],
+  userId: null,
   credits: 0,
   demoMode: false,
   savedReport: null,
@@ -47,11 +51,12 @@ function reducer(state, action) {
     case 'SET_TYPES':
       return { ...state, selectedTypes: action.payload };
 
-    case 'ADD_CREDITS':
-      return { ...state, credits: state.credits + action.payload };
+    case 'SET_USER_ID':
+      return { ...state, userId: action.payload };
 
-    case 'USE_CREDIT':
-      return { ...state, credits: Math.max(0, state.credits - 1) };
+    // credits 真相源 = 服务端，覆盖式设置
+    case 'SET_CREDITS':
+      return { ...state, credits: action.payload };
 
     case 'SET_DEMO':
       return { ...state, demoMode: action.payload };
@@ -76,7 +81,7 @@ function reducer(state, action) {
       return { ...state, savedReport: null };
 
     case 'RESET':
-      return { ...initialState, credits: state.credits, savedReport: null };
+      return { ...initialState, userId: state.userId, credits: state.credits, savedReport: null };
 
     default:
       return state;
@@ -87,36 +92,56 @@ const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  // 购买异步结果转 Promise：listener 回调里 resolve/reject
+  const purchaseResolver = useRef(null);
 
-  // Startup: load credits and last report
+  // Startup: 加载上次报告 + 拿 user_id + 查服务端余额 + 连 StoreKit
   useEffect(() => {
-    Promise.all([
-      AsyncStorage.getItem(STORAGE_KEY),
-      AsyncStorage.getItem(REPORT_KEY),
-    ])
-      .then(([creditsVal, reportVal]) => {
-        if (creditsVal !== null) {
-          const parsed = parseInt(creditsVal, 10);
-          if (!isNaN(parsed) && parsed > 0) {
-            dispatch({ type: 'ADD_CREDITS', payload: parsed });
+    let mounted = true;
+
+    AsyncStorage.getItem(REPORT_KEY)
+      .then((reportVal) => {
+        if (!mounted || reportVal == null) return;
+        try {
+          const parsed = JSON.parse(reportVal);
+          if (parsed && parsed.api2) {
+            dispatch({ type: 'LOAD_SAVED_REPORT', payload: parsed });
           }
-        }
-        if (reportVal !== null) {
-          try {
-            const parsedReport = JSON.parse(reportVal);
-            if (parsedReport && parsedReport.api2) {
-              dispatch({ type: 'LOAD_SAVED_REPORT', payload: parsedReport });
-            }
-          } catch (_) {}
-        }
+        } catch (_) {}
       })
       .catch(() => {});
+
+    (async () => {
+      const uid = await getUserId();
+      if (!mounted) return;
+      dispatch({ type: 'SET_USER_ID', payload: uid });
+      try {
+        const c = await fetchCredits(uid);
+        if (mounted) dispatch({ type: 'SET_CREDITS', payload: c });
+      } catch (_) {}
+      if (Platform.OS === 'ios') {
+        initIAP(
+          uid,
+          (balance) => {
+            dispatch({ type: 'SET_CREDITS', payload: balance });
+            purchaseResolver.current?.resolve(balance);
+            purchaseResolver.current = null;
+          },
+          (msg) => {
+            purchaseResolver.current?.reject(new Error(msg));
+            purchaseResolver.current = null;
+          }
+        );
+      }
+    })();
+
+    return () => {
+      mounted = false;
+      teardownIAP();
+    };
   }, []);
 
-  useEffect(() => {
-    AsyncStorage.setItem(STORAGE_KEY, String(state.credits)).catch(() => {});
-  }, [state.credits]);
-
+  // 报告持久化（credits 不再本地存，以服务端为准）
   useEffect(() => {
     if (state.savedReport !== null) {
       AsyncStorage.setItem(REPORT_KEY, JSON.stringify(state.savedReport)).catch(() => {});
@@ -125,8 +150,28 @@ export function AppProvider({ children }) {
     }
   }, [state.savedReport]);
 
+  // 发起购买，Promise 在验证成功(resolve 新余额)或失败(reject)时结束
+  async function buy(sku) {
+    return new Promise((resolve, reject) => {
+      purchaseResolver.current = { resolve, reject };
+      buyCredits(sku).catch((e) => {
+        purchaseResolver.current = null;
+        reject(e);
+      });
+    });
+  }
+
+  // 重新拉服务端余额（扣费后校正）
+  async function refreshCredits() {
+    try {
+      const uid = await getUserId();
+      const c = await fetchCredits(uid);
+      dispatch({ type: 'SET_CREDITS', payload: c });
+    } catch (_) {}
+  }
+
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{ state, dispatch, buy, refreshCredits }}>
       {children}
     </AppContext.Provider>
   );
