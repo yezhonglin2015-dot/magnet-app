@@ -11,6 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 import DimBar from '../components/DimBar';
+import MeEntry from '../components/MeEntry';
 
 export default function BaseScreen({ navigation }) {
   const { state } = useApp();
@@ -18,6 +19,7 @@ export default function BaseScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <MeEntry navigation={navigation} />
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
@@ -83,7 +85,7 @@ export default function BaseScreen({ navigation }) {
         <TouchableOpacity
           activeOpacity={0.85}
           style={styles.ctaWrapper}
-          onPress={() => navigation.navigate('Target')}
+          onPress={() => navigation.navigate(state.api3 ? 'TResult' : 'Target')}
         >
           <LinearGradient
             colors={grad}
@@ -91,7 +93,7 @@ export default function BaseScreen({ navigation }) {
             end={{ x: 1, y: 0 }}
             style={styles.gradButton}
           >
-            <Text style={styles.gradButtonText}>选择想吸引的类型 →</Text>
+            <Text style={styles.gradButtonText}>{state.api3 ? '查看专属分析 →' : '选择想吸引的类型 →'}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </ScrollView>

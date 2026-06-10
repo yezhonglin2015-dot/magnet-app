@@ -77,7 +77,8 @@ function reducer(state, action) {
       return { ...state, savedReport: null };
 
     case 'RESET':
-      return { ...initialState, userId: state.userId, credits: state.credits, savedReport: null };
+      // 开新一轮分析：清空图片/session/各 api 结果，但保留 userId、credits、历史报告
+      return { ...initialState, userId: state.userId, credits: state.credits, savedReport: state.savedReport };
 
     default:
       return state;

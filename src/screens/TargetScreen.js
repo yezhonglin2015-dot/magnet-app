@@ -14,6 +14,7 @@ import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 import { TYPES } from '../constants/config';
 import TypeCard from '../components/TypeCard';
+import MeEntry from '../components/MeEntry';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - spacing.md * 2 - spacing.sm) / 2;
@@ -58,6 +59,7 @@ export default function TargetScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <MeEntry navigation={navigation} />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.back}>←</Text>

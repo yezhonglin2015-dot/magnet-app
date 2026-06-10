@@ -33,6 +33,7 @@ export default function AnalyzingTargetScreen({ navigation }) {
         clearInterval(cycleRef.current);
         dispatch({ type: 'SET_API3', payload: data.result });
         dispatch({ type: 'SET_PORTRAITS', payload: data.portraits });
+        dispatch({ type: 'SAVE_REPORT' });
         navigation.replace('TResult');
       })
       .catch(() => {

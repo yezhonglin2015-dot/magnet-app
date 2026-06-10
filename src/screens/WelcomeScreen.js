@@ -48,7 +48,7 @@ export default function WelcomeScreen({ navigation }) {
         <View style={styles.buttonBlock}>
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => navigation.navigate('Gender')}
+            onPress={() => { dispatch({ type: 'RESET' }); navigation.navigate('Gender'); }}
           >
             <LinearGradient
               colors={grad}

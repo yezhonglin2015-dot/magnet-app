@@ -11,6 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 import DimBar from '../components/DimBar';
+import MeEntry from '../components/MeEntry';
 
 export default function BasicScreen({ navigation }) {
   const { state } = useApp();
@@ -18,6 +19,7 @@ export default function BasicScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <MeEntry navigation={navigation} />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Back arrow */}
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>

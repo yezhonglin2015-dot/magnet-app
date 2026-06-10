@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useFocusEffect } from '@react-navigation/native';
 import { useApp } from '../context/AppContext';
 import { PLANS } from '../constants/config';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
@@ -19,10 +20,21 @@ export default function PaywallScreen({ navigation }) {
   const [buying, setBuying] = useState(false);
 
   const hasCredits = state.credits > 0;
+  const navigatingRef = useRef(false);
+
+  // 返回本屏（含分析失败 goBack）时解锁，避免按钮卡死
+  useFocusEffect(
+    React.useCallback(() => {
+      navigatingRef.current = false;
+      setBuying(false);
+    }, [])
+  );
 
   const handlePress = async () => {
     if (hasCredits) {
-      // 扣费在服务端（analyzeBase 带 user_id），这里不本地扣
+      // 有余额：服务端扣费（analyzeBase 带 user_id）。防连点重复扣费
+      if (navigatingRef.current) return;
+      navigatingRef.current = true;
       navigation.navigate('AnalyzingBase');
       return;
     }

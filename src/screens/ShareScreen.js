@@ -13,6 +13,7 @@ import { captureRef } from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
+import MeEntry from '../components/MeEntry';
 
 export default function ShareScreen({ navigation }) {
   const { state, dispatch } = useApp();
@@ -55,6 +56,7 @@ export default function ShareScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <MeEntry navigation={navigation} />
       <View style={styles.container}>
         {/* Back */}
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
