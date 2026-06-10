@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   Text,
   Image,
-  ScrollView,
   TouchableOpacity,
   Alert,
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { captureRef } from 'react-native-view-shot';
+import * as Sharing from 'expo-sharing';
 import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 
 export default function ShareScreen({ navigation }) {
   const { state, dispatch } = useApp();
+  const cardRef = useRef(null);
 
   const personaName = state.api2?.人设?.name || '';
   const tagline = state.api2?.人设?.tagline || '';
@@ -28,8 +30,22 @@ export default function ShareScreen({ navigation }) {
     .join('')
     .trim();
 
-  function handleShare() {
-    Alert.alert('截图分享', '截图这个页面，发给朋友或存到相册~');
+  async function handleShare() {
+    try {
+      // 把分享卡这块 View 截成图片
+      const uri = await captureRef(cardRef, { format: 'png', quality: 1 });
+      if (await Sharing.isAvailableAsync()) {
+        // 弹出系统分享面板（微信 / 小红书 / 存相册 等）
+        await Sharing.shareAsync(uri, {
+          mimeType: 'image/png',
+          dialogTitle: '分享你的展示面磁力卡',
+        });
+      } else {
+        Alert.alert('分享不可用', '可以直接截图这张卡片发出去~');
+      }
+    } catch (e) {
+      Alert.alert('分享失败', '可以直接截图这张卡片发出去~');
+    }
   }
 
   function handleReset() {
@@ -39,70 +55,51 @@ export default function ShareScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
         {/* Back */}
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Text style={styles.back}>←</Text>
         </TouchableOpacity>
 
-        {/* Page title */}
-        <Text style={styles.pageTitle}>分享卡</Text>
-
-        {/* Share card */}
-        <View style={styles.reportCard}>
-          {/* 用户第一张截图 */}
+        {/* Share card —— view-shot 截的就是这块 */}
+        <View ref={cardRef} collapsable={false} style={styles.reportCard}>
           {firstImage ? (
             <View style={styles.imageWrap}>
               <Image source={{ uri: firstImage }} style={styles.image} resizeMode="cover" />
               <LinearGradient
-                colors={['transparent', 'rgba(0,0,0,0.85)']}
+                colors={['transparent', 'rgba(0,0,0,0.88)']}
                 style={styles.imageFade}
               />
             </View>
           ) : null}
 
-          {/* 内容区 */}
           <View style={styles.cardBody}>
-            {/* 标题（人设名） */}
-            {personaName ? (
-              <Text style={styles.personaName}>{personaName}</Text>
-            ) : null}
-
-            {/* tagline */}
-            {tagline ? (
-              <Text style={styles.tagline}>{tagline}</Text>
-            ) : null}
-
-            {/* 分隔线 */}
+            {personaName ? <Text style={styles.personaName}>{personaName}</Text> : null}
+            {tagline ? <Text style={styles.tagline} numberOfLines={2}>{tagline}</Text> : null}
             <View style={styles.divider} />
-
-            {/* 简短总结 */}
-            {summary ? (
-              <Text style={styles.summary}>{summary}</Text>
-            ) : null}
-
-            {/* 品牌水印 */}
+            {summary ? <Text style={styles.summary} numberOfLines={3}>{summary}</Text> : null}
             <Text style={styles.brand}>Magnet · 展示面磁力</Text>
           </View>
         </View>
 
-        {/* Share button */}
-        <TouchableOpacity onPress={handleShare} activeOpacity={0.8} style={styles.ctaWrapper}>
-          <LinearGradient
-            colors={grad}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.btn}
-          >
-            <Text style={styles.btnText}>分享</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+        {/* Buttons */}
+        <View style={styles.actions}>
+          <TouchableOpacity onPress={handleShare} activeOpacity={0.85} style={styles.ctaWrapper}>
+            <LinearGradient
+              colors={grad}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.btn}
+            >
+              <Text style={styles.btnText}>分享 / 存图</Text>
+            </LinearGradient>
+          </TouchableOpacity>
 
-        {/* Reset button */}
-        <TouchableOpacity onPress={handleReset} activeOpacity={0.7} style={styles.resetBtn}>
-          <Text style={styles.resetText}>重新测一次</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity onPress={handleReset} activeOpacity={0.7} style={styles.resetBtn}>
+            <Text style={styles.resetText}>重新测一次</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -112,9 +109,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.bg,
   },
-  scroll: {
-    paddingHorizontal: spacing.xl,
-    paddingBottom: spacing.xl,
+  container: {
+    flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
   },
   backBtn: {
     paddingTop: spacing.sm,
@@ -125,18 +123,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: colors.text,
   },
-  pageTitle: {
-    fontSize: fontSize.xxl,
-    fontWeight: '700',
-    color: colors.text,
-    marginBottom: spacing.lg,
-  },
+  // 卡片占据中间，按钮在底部，整体一屏
   reportCard: {
+    flex: 1,
     backgroundColor: colors.card,
     borderRadius: radius.xl,
     overflow: 'hidden',
-    marginBottom: spacing.lg,
-    // 卡片阴影，更精致
+    marginBottom: spacing.md,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.4,
@@ -145,7 +138,7 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     width: '100%',
-    aspectRatio: 4 / 5,
+    flex: 1,
     position: 'relative',
   },
   image: {
@@ -157,13 +150,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: '40%',
+    height: '45%',
   },
   cardBody: {
     padding: spacing.lg,
   },
   personaName: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '700',
     color: colors.accent1,
     marginBottom: 6,
@@ -171,30 +164,31 @@ const styles = StyleSheet.create({
   tagline: {
     fontSize: fontSize.md,
     color: colors.text,
-    lineHeight: 24,
+    lineHeight: 22,
   },
   divider: {
     height: 1,
     backgroundColor: colors.border,
-    marginVertical: spacing.md,
+    marginVertical: spacing.sm,
   },
   summary: {
     fontSize: fontSize.sm,
     color: colors.sub,
-    lineHeight: 24,
+    lineHeight: 22,
   },
   brand: {
     fontSize: fontSize.xs,
     color: colors.sub,
     opacity: 0.6,
-    marginTop: spacing.lg,
+    marginTop: spacing.md,
     letterSpacing: 1,
   },
-  ctaWrapper: {
-    marginBottom: spacing.md,
+  actions: {
+    gap: spacing.sm,
   },
+  ctaWrapper: {},
   btn: {
-    height: 54,
+    height: 52,
     borderRadius: radius.full,
     alignItems: 'center',
     justifyContent: 'center',
@@ -205,7 +199,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.lg,
   },
   resetBtn: {
-    height: 54,
+    height: 48,
     borderRadius: radius.full,
     alignItems: 'center',
     justifyContent: 'center',
