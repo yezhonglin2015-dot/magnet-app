@@ -23,7 +23,7 @@ export default function WelcomeScreen({ navigation }) {
     if (savedReport.api3) {
       dispatch({ type: 'SET_API3', payload: savedReport.api3 });
       dispatch({ type: 'SET_PORTRAITS', payload: savedReport.portraits });
-      dispatch({ type: 'SET_TYPES', payload: savedReport.types });
+      dispatch({ type: 'SET_TYPES', payload: savedReport.selectedTypes });
     }
     navigation.navigate('Base');
   }
