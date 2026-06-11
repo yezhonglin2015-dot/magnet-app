@@ -23,13 +23,10 @@ export default function ShareScreen({ navigation }) {
   const tagline = state.api2?.人设?.tagline || '';
   const firstImage = state.images?.[0] || null;
 
-  // 取叙事前 1~2 句做简短总结
-  const lueshi = state.api2?.叙事 || '';
-  const summary = lueshi
-    .split(/(?<=[。！？])/)
-    .slice(0, 2)
-    .join('')
-    .trim();
+  // 分享卡用的赞美亮点（一行一条）；旧报告没这字段时退回叙事首句
+  const highlights = (state.api2?.分享亮点 && state.api2.分享亮点.length)
+    ? state.api2.分享亮点
+    : (state.api2?.叙事 ? [state.api2.叙事.split(/(?<=[。！？])/)[0].trim()] : []);
 
   async function handleShare() {
     try {
@@ -79,13 +76,22 @@ export default function ShareScreen({ navigation }) {
             {personaName ? <Text style={styles.personaName}>{personaName}</Text> : null}
             {tagline ? <Text style={styles.tagline} numberOfLines={2}>{tagline}</Text> : null}
             <View style={styles.divider} />
-            {summary ? <Text style={styles.summary} numberOfLines={3}>{summary}</Text> : null}
+            {highlights.length > 0 && (
+              <View style={styles.highlights}>
+                {highlights.map((h, i) => (
+                  <View key={i} style={styles.highlightRow}>
+                    <Text style={styles.highlightDot}>✦</Text>
+                    <Text style={styles.highlightText}>{h}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
 
             {/* 品牌行：图标 + 名 + 勾人 CTA（二维码上线后再加） */}
             <View style={styles.brandRow}>
               <Image source={require('../../assets/icon.png')} style={styles.brandLogo} />
               <View style={styles.brandTextWrap}>
-                <Text style={styles.brandName}>Magnet · 展示面磁力</Text>
+                <Text style={styles.brandName}>Magnet 展示面分析</Text>
                 <Text style={styles.brandCta}>你的展示面，在替你吸引谁？</Text>
               </View>
             </View>
@@ -181,9 +187,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
     marginVertical: spacing.sm,
   },
-  summary: {
+  highlights: {
+    gap: 8,
+  },
+  highlightRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  highlightDot: {
     fontSize: fontSize.sm,
-    color: colors.sub,
+    color: colors.accent1,
+    marginRight: 8,
+    lineHeight: 22,
+  },
+  highlightText: {
+    flex: 1,
+    fontSize: fontSize.md,
+    color: colors.text,
     lineHeight: 22,
   },
   brandRow: {
