@@ -54,7 +54,7 @@ export default function AnalyzingBasicScreen({ navigation }) {
         navigation.replace(state.credits > 0 ? 'AnalyzingBase' : 'Basic');
       })
       .catch(() => {
-        Alert.alert('分析失败', '请检查网络连接后重试');
+        Alert.alert('网络有点挤', '再试一次就好～');
         navigation.goBack();
       });
   }, []);

@@ -38,7 +38,7 @@ export default function AnalyzingTargetScreen({ navigation }) {
       })
       .catch(() => {
         clearInterval(cycleRef.current);
-        Alert.alert('分析失败', '请重试');
+        Alert.alert('网络有点挤', '再试一次就好～不耗次数。');
         navigation.goBack();
       });
     return () => {

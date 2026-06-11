@@ -45,7 +45,7 @@ export default function AnalyzingBaseScreen({ navigation }) {
         if (doneRef.current) return;
         doneRef.current = true;
         refreshCredits(); // 服务端扣费失败会自动退回，拉真实余额
-        Alert.alert('分析失败', '请重试');
+        Alert.alert('网络有点挤', '再试一次就好～放心，这次没有扣次数。');
         navigation.goBack();
       });
   }, []);
