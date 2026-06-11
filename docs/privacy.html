@@ -19,41 +19,47 @@
 
 <!-- ═══════════════════ ENGLISH ═══════════════════ -->
 <h1>Privacy Policy</h1>
-<p class="meta">App: Magnet &nbsp;·&nbsp; Last updated: June 9, 2026 &nbsp;·&nbsp; Effective: June 9, 2026</p>
+<p class="meta">App: Magnet &nbsp;·&nbsp; Last updated: June 10, 2026 &nbsp;·&nbsp; Effective: June 10, 2026</p>
 
 <h2>1. Overview</h2>
-<p>Magnet ("we", "our", "the app") analyzes Instagram profile screenshots as creative works to provide personalized presentation feedback. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights.</p>
+<p>Magnet ("we", "our", "the app") analyzes Instagram profile screenshots as creative works to provide personalized presentation feedback. We are committed to protecting your privacy and collecting only the minimum data needed to run the service. This policy explains what data we collect, how we use it, who processes it, and your rights.</p>
 
 <h2>2. Data We Collect</h2>
 <ul>
-  <li><strong>Photos you upload:</strong> You provide up to 3 Instagram profile screenshots per analysis session. These images are sent to our analysis server and to Anthropic's Claude API solely to generate your report. Images are not stored permanently — they are held in temporary server memory for the duration of your session only and are discarded when the session ends or the server restarts.</li>
-  <li><strong>Purchase data:</strong> Credit purchases are processed entirely by Apple's App Store (StoreKit). We do not collect, store, or see your payment information. We receive only a confirmation of successful purchase to credit your account balance.</li>
-  <li><strong>Usage preferences:</strong> Your remaining credit balance and selected preferences are stored locally on your device using Apple's standard device storage (AsyncStorage / Keychain). This data never leaves your device unless you explicitly share it.</li>
-  <li><strong>No account required:</strong> Magnet does not require you to create an account, and we do not collect your name, email address, phone number, or any other personally identifiable information.</li>
+  <li><strong>Photos you upload:</strong> You provide up to 3 Instagram profile screenshots per analysis session. These images are uploaded to our server (hosted on Google Firebase) and sent to Anthropic's Claude API solely to generate your report. They are stored temporarily on our server only for as long as needed to produce your full analysis, and are <strong>automatically deleted once your full analysis (Base Analysis) is generated</strong>. We do not use your photos for any other purpose.</li>
+  <li><strong>Anonymous device identifier:</strong> The first time you open the app, we generate a random anonymous ID for your device. It is stored on your device and on our server. It is <strong>not</strong> linked to your name, Apple ID, or any real-world identity — its only purpose is to keep track of your purchased credit balance and prevent abuse.</li>
+  <li><strong>Credit balance:</strong> Your remaining credit balance is stored on our server, associated with the anonymous device identifier above. We store it server-side (rather than only on your device) so that the balance you paid for cannot be tampered with locally.</li>
+  <li><strong>Purchase data:</strong> Credit purchases are processed entirely by Apple's App Store (StoreKit). We do not collect, store, or see your payment information. We receive only a purchase receipt, which we verify with Apple in order to add credits to your balance.</li>
+  <li><strong>No account, no contact info:</strong> Magnet does not require you to create an account, and we do not collect your name, email address, phone number, or any other directly identifying personal information.</li>
 </ul>
 
 <h2>3. How We Use Your Data</h2>
 <ul>
-  <li>To generate your profile analysis report (images sent to Claude API during active session only).</li>
-  <li>To process and verify in-app purchases via Apple StoreKit.</li>
-  <li>To maintain your credit balance on your device.</li>
+  <li>To generate your profile analysis report (images sent to Claude API only while producing your report).</li>
+  <li>To process and verify in-app purchases via Apple StoreKit and credit your balance.</li>
+  <li>To maintain your purchased credit balance and prevent abuse.</li>
 </ul>
-<p>We do not use your data for advertising, profiling, or any purpose beyond delivering the service.</p>
+<p>We do not use your data for advertising, profiling, or any purpose beyond delivering the service. We do not sell your data.</p>
 
 <h2>4. Third-Party Services</h2>
 <ul>
-  <li><strong>Anthropic Claude API:</strong> Profile images and analysis prompts are sent to Anthropic's API to generate analysis text. Anthropic's privacy policy applies: <a href="https://www.anthropic.com/privacy" target="_blank">anthropic.com/privacy</a>. Per Anthropic's API terms, data submitted via the API is not used to train models.</li>
+  <li><strong>Anthropic Claude API:</strong> Profile images and analysis prompts are sent to Anthropic's API to generate analysis text. Per Anthropic's API terms, data submitted via the API is not used to train their models. Anthropic's privacy policy applies: <a href="https://www.anthropic.com/privacy" target="_blank">anthropic.com/privacy</a>.</li>
+  <li><strong>Google Firebase:</strong> Our backend runs on Google Firebase (Cloud Functions and Firestore). Firebase temporarily hosts uploaded images during analysis and stores your anonymous device ID and credit balance. Google's privacy policy applies: <a href="https://firebase.google.com/support/privacy" target="_blank">firebase.google.com/support/privacy</a>.</li>
   <li><strong>Apple App Store / StoreKit:</strong> Handles all in-app purchases. Apple's privacy policy applies: <a href="https://www.apple.com/legal/privacy/" target="_blank">apple.com/legal/privacy</a>.</li>
 </ul>
 
 <h2>5. Data Retention</h2>
-<p>Uploaded photos exist only in volatile server memory during your active session (typically minutes). No photos are written to disk or backed up. Session data is lost when the server restarts. Your device-local credit balance persists until you uninstall the app or clear app data.</p>
+<p>Uploaded photos are stored only temporarily on our server and are automatically deleted as soon as your full analysis is generated — they are not kept, backed up, or reused afterward. Your anonymous device identifier and credit balance are retained on our server until you request deletion (see "Your Rights") or stop using the app. Data stored locally on your device (such as your most recent report) persists until you clear it in the app or uninstall.</p>
 
 <h2>6. Children's Privacy</h2>
 <p>Magnet is intended for users aged 17 and older. We do not knowingly collect any data from children under 17. If you believe a child has used the app, please contact us.</p>
 
 <h2>7. Your Rights</h2>
-<p>Because we do not store personal data on our servers, there is nothing for us to retrieve, correct, or delete on your behalf. If you wish to remove locally stored data, uninstall the app from your device.</p>
+<ul>
+  <li><strong>Local data:</strong> You can clear locally stored data anytime via "Clear Data" in the app's "Me" page, or by uninstalling the app.</li>
+  <li><strong>Server data:</strong> To delete your anonymous device identifier and associated credit balance from our server, email us at the address below. Note that deleting this data also removes any remaining purchased credits, which cannot be restored afterward.</li>
+  <li><strong>Photos:</strong> Because uploaded photos are deleted automatically after each analysis, there is normally nothing for us to retrieve or delete on your behalf.</li>
+</ul>
 
 <h2>8. Changes to This Policy</h2>
 <p>We may update this policy as the app evolves. The "Last updated" date above will reflect any changes. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
@@ -65,41 +71,47 @@
 
 <!-- ═══════════════════ 中文 ═══════════════════ -->
 <h1>隐私政策</h1>
-<p class="meta">应用：展示面磁力（Magnet）&nbsp;·&nbsp; 最后更新：2026年6月9日 &nbsp;·&nbsp; 生效日期：2026年6月9日</p>
+<p class="meta">应用：展示面磁力（Magnet）&nbsp;·&nbsp; 最后更新：2026年6月10日 &nbsp;·&nbsp; 生效日期：2026年6月10日</p>
 
 <h2>1. 概述</h2>
-<p>展示面磁力（以下简称"本应用"）将 Instagram 主页截图作为创作作品进行分析，为您提供个性化的展示面建议。我们致力于保护您的隐私。本政策说明我们收集哪些数据、如何使用，以及您享有的权利。</p>
+<p>展示面磁力（以下简称"本应用"）将 Instagram 主页截图作为创作作品进行分析，为您提供个性化的展示面建议。我们致力于保护您的隐私，仅收集运行服务所需的最少数据。本政策说明我们收集哪些数据、如何使用、由谁处理，以及您享有的权利。</p>
 
 <h2>2. 我们收集的数据</h2>
 <ul>
-  <li><strong>您上传的照片：</strong>每次分析您最多提供 3 张 Instagram 主页截图。这些图片仅用于生成分析报告，会被发送至我们的分析服务器和 Anthropic 的 Claude API。图片不会被永久存储——仅在会话期间保存于服务器临时内存中，会话结束或服务器重启后即被丢弃。</li>
-  <li><strong>购买数据：</strong>次数购买完全由 Apple App Store（StoreKit）处理。我们不收集、存储或查看您的支付信息，仅接收购买成功的确认通知以增加您的次数余额。</li>
-  <li><strong>使用偏好：</strong>您的次数余额和选择偏好仅存储在您的设备本地（AsyncStorage / Keychain），不会传输到我们的服务器。</li>
-  <li><strong>无需注册账户：</strong>本应用无需创建账户，我们不收集您的姓名、电子邮件、手机号码或任何可识别个人身份的信息。</li>
+  <li><strong>您上传的照片：</strong>每次分析您最多提供 3 张 Instagram 主页截图。这些图片会上传至我们的服务器（托管于 Google Firebase）并发送至 Anthropic 的 Claude API，仅用于生成分析报告。图片仅在生成完整分析所需的期间临时存储于服务器，并在<strong>生成完整分析（大基础分析）后被自动删除</strong>。我们不会将您的照片用于任何其他用途。</li>
+  <li><strong>匿名设备标识符：</strong>首次打开应用时，我们会为您的设备生成一个随机匿名 ID，存储在您的设备和我们的服务器上。它<strong>不</strong>与您的姓名、Apple ID 或任何真实身份关联——其唯一用途是记录您购买的次数余额并防止滥用。</li>
+  <li><strong>次数余额：</strong>您的剩余次数余额存储在我们的服务器上，与上述匿名设备标识符关联。我们将余额存于服务端（而非仅存本地），是为了防止您付费购买的余额在本地被篡改。</li>
+  <li><strong>购买数据：</strong>次数购买完全由 Apple App Store（StoreKit）处理。我们不收集、存储或查看您的支付信息，仅接收购买凭据，并向 Apple 验证后为您增加次数余额。</li>
+  <li><strong>无需账户、无需联系方式：</strong>本应用无需创建账户，我们不收集您的姓名、电子邮件、手机号码或任何可直接识别个人身份的信息。</li>
 </ul>
 
 <h2>3. 数据的使用方式</h2>
 <ul>
-  <li>生成您的展示面分析报告（图片仅在活跃会话期间发送至 Claude API）。</li>
-  <li>通过 Apple StoreKit 处理和验证应用内购买。</li>
-  <li>在您的设备上维护次数余额。</li>
+  <li>生成您的展示面分析报告（图片仅在生成报告期间发送至 Claude API）。</li>
+  <li>通过 Apple StoreKit 处理和验证应用内购买，并为您增加余额。</li>
+  <li>维护您购买的次数余额并防止滥用。</li>
 </ul>
-<p>我们不将您的数据用于广告、用户画像或任何与提供服务无关的目的。</p>
+<p>我们不将您的数据用于广告、用户画像或任何与提供服务无关的目的，也不出售您的数据。</p>
 
 <h2>4. 第三方服务</h2>
 <ul>
-  <li><strong>Anthropic Claude API：</strong>主页图片和分析提示词会发送至 Anthropic API 以生成分析文字。Anthropic 的隐私政策适用：<a href="https://www.anthropic.com/privacy" target="_blank">anthropic.com/privacy</a>。根据 Anthropic API 条款，通过 API 提交的数据不用于训练模型。</li>
+  <li><strong>Anthropic Claude API：</strong>主页图片和分析提示词会发送至 Anthropic API 以生成分析文字。根据 Anthropic API 条款，通过 API 提交的数据不用于训练其模型。Anthropic 的隐私政策适用：<a href="https://www.anthropic.com/privacy" target="_blank">anthropic.com/privacy</a>。</li>
+  <li><strong>Google Firebase：</strong>我们的后端运行于 Google Firebase（Cloud Functions 与 Firestore）。Firebase 在分析期间临时存放上传的图片，并存储您的匿名设备 ID 和次数余额。Google 的隐私政策适用：<a href="https://firebase.google.com/support/privacy" target="_blank">firebase.google.com/support/privacy</a>。</li>
   <li><strong>Apple App Store / StoreKit：</strong>处理所有应用内购买。Apple 的隐私政策适用：<a href="https://www.apple.com/legal/privacy/" target="_blank">apple.com/legal/privacy</a>。</li>
 </ul>
 
 <h2>5. 数据保留</h2>
-<p>上传的照片仅存在于会话期间的服务器临时内存中（通常仅几分钟），不写入磁盘，不做备份。服务器重启后会话数据即消失。设备本地的次数余额在卸载应用或清除应用数据前持续保留。</p>
+<p>上传的照片仅临时存储于我们的服务器，并在生成完整分析后立即自动删除——之后不再保留、备份或复用。您的匿名设备标识符和次数余额会保留在我们的服务器上，直到您请求删除（见"您的权利"）或停止使用本应用。存储在您设备本地的数据（如最近一次报告）会持续保留，直到您在应用内清除或卸载应用。</p>
 
 <h2>6. 儿童隐私</h2>
 <p>本应用适合 17 岁及以上用户使用。我们不会故意收集 17 岁以下用户的任何数据。如您认为有未成年人使用了本应用，请联系我们。</p>
 
 <h2>7. 您的权利</h2>
-<p>由于我们不在服务器上存储个人数据，没有需要代您检索、更正或删除的内容。如需删除本地存储的数据，请在设备上卸载本应用。</p>
+<ul>
+  <li><strong>本地数据：</strong>您可随时在应用"我的"页面通过"清除数据"清除本地存储的数据，或卸载应用。</li>
+  <li><strong>服务器数据：</strong>如需从我们的服务器删除您的匿名设备标识符及关联的次数余额，请发送邮件至下方地址。请注意：删除此数据也会一并移除剩余的已购次数，且无法恢复。</li>
+  <li><strong>照片：</strong>由于上传的照片在每次分析后即被自动删除，通常没有需要我们代您检索或删除的内容。</li>
+</ul>
 
 <h2>8. 政策变更</h2>
 <p>随应用发展，我们可能更新本政策。页面顶部的"最后更新"日期将反映任何变更。在变更后继续使用本应用即视为接受更新后的政策。</p>
