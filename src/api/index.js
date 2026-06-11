@@ -15,7 +15,7 @@ export async function analyzeBasic(gender, imageUris) {
   });
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 60000);
+  const timer = setTimeout(() => controller.abort(), 120000);
   try {
     const res = await fetch(API_BASE + '/analyzeBasic', {
       method: 'POST',
@@ -34,7 +34,7 @@ export async function analyzeBasic(gender, imageUris) {
 
 export async function analyzeBase(sessionId, userId) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 60000);
+  const timer = setTimeout(() => controller.abort(), 120000);
   try {
     const res = await fetch(API_BASE + '/analyzeBase', {
       method: 'POST',
@@ -75,7 +75,7 @@ export async function fetchCredits(userId) {
 
 export async function analyzeTarget(sessionId, types) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 60000);
+  const timer = setTimeout(() => controller.abort(), 120000);
   try {
     const res = await fetch(API_BASE + '/analyzeTarget', {
       method: 'POST',
