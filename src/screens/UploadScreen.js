@@ -43,8 +43,20 @@ export default function UploadScreen({ navigation }) {
         </TouchableOpacity>
 
         <Text style={styles.title}>上传你的展示面</Text>
-        <Text style={styles.sub}>1~3 张截图，图越多分析越准</Text>
-        <Text style={styles.tip}>IG 主页 · 朋友圈 · 小红书 · 任何你的展示面都可以</Text>
+        <Text style={styles.sub}>1~3 张截图，越多越准</Text>
+
+        {/* 引导：要截的是整个主页（九宫格），不是单张照片 */}
+        <View style={styles.guideCard}>
+          <View style={styles.gridDemo}>
+            {Array.from({ length: 9 }).map((_, i) => (
+              <View key={i} style={styles.gridCell} />
+            ))}
+          </View>
+          <View style={styles.guideTextWrap}>
+            <Text style={styles.guideTitle}>截「整个主页」那一屏</Text>
+            <Text style={styles.guideDesc}>就是九宫格那一整页，不是单张照片。IG 主页 · 朋友圈 · 小红书都行。</Text>
+          </View>
+        </View>
 
         <View style={styles.slots}>
           {[0, 1, 2].map((i) => (
@@ -109,11 +121,43 @@ const styles = StyleSheet.create({
     color: colors.sub,
     marginBottom: spacing.xs,
   },
-  tip: {
+  guideCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    backgroundColor: colors.card,
+    borderRadius: radius.lg,
+    padding: spacing.md,
+    marginTop: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  gridDemo: {
+    width: 46,
+    height: 46,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 2,
+  },
+  gridCell: {
+    width: 14,
+    height: 14,
+    borderRadius: 2,
+    backgroundColor: colors.accent1,
+    opacity: 0.55,
+  },
+  guideTextWrap: {
+    flex: 1,
+  },
+  guideTitle: {
+    fontSize: fontSize.md,
+    fontWeight: '700',
+    color: colors.text,
+    marginBottom: 2,
+  },
+  guideDesc: {
     fontSize: fontSize.xs,
     color: colors.sub,
-    opacity: 0.6,
-    marginBottom: spacing.md,
+    lineHeight: 18,
   },
   slots: {
     flexDirection: 'row',

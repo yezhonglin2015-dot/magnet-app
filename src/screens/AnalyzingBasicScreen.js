@@ -50,7 +50,8 @@ export default function AnalyzingBasicScreen({ navigation }) {
       .then(data => {
         dispatch({ type: 'SET_SESSION', payload: data.session_id });
         dispatch({ type: 'SET_API1', payload: data.result });
-        navigation.replace('Basic');
+        // 有余额：直接连着做完整分析(②)，跳过初诊页和付费墙；无余额：走初诊→付费墙勾人
+        navigation.replace(state.credits > 0 ? 'AnalyzingBase' : 'Basic');
       })
       .catch(() => {
         Alert.alert('分析失败', '请检查网络连接后重试');

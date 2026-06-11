@@ -56,7 +56,7 @@ export default function WelcomeScreen({ navigation }) {
               end={{ x: 1, y: 0 }}
               style={styles.gradButton}
             >
-              <Text style={styles.gradButtonText}>开始分析</Text>
+              <Text style={styles.gradButtonText}>{state.credits > 0 ? `开始分析 · 还剩 ${state.credits} 次` : '开始分析'}</Text>
             </LinearGradient>
           </TouchableOpacity>
 
