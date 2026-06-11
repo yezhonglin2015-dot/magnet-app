@@ -14,11 +14,12 @@ import { useApp } from '../context/AppContext';
 import { PLANS } from '../constants/config';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
 
-export default function PaywallScreen({ navigation }) {
+export default function PaywallScreen({ navigation, route }) {
   const { state, buy } = useApp();
   const [selectedPlan, setSelectedPlan] = useState(1);
   const [buying, setBuying] = useState(false);
 
+  const topup = route?.params?.topup; // 从「我的」进来=纯充值，只买不触发分析
   const hasCredits = state.credits > 0;
   const navigatingRef = useRef(false);
 
@@ -31,6 +32,21 @@ export default function PaywallScreen({ navigation }) {
   );
 
   const handlePress = async () => {
+    // 纯充值（从「我的」进来，没有待分析的 session）：只购买，买完回上一页，绝不触发分析
+    if (topup) {
+      if (buying) return;
+      setBuying(true);
+      try {
+        await buy(PLANS[selectedPlan].sku);
+        navigation.goBack();
+      } catch (e) {
+        Alert.alert('购买未完成', e.message || '请重试');
+      } finally {
+        setBuying(false);
+      }
+      return;
+    }
+    // 解锁分析模式（从初诊进来，有 session）
     if (hasCredits) {
       // 有余额：服务端扣费（analyzeBase 带 user_id）。防连点重复扣费
       if (navigatingRef.current) return;
@@ -53,6 +69,8 @@ export default function PaywallScreen({ navigation }) {
 
   const buttonLabel = buying
     ? '正在购买…'
+    : topup
+    ? `购买 ${PLANS[selectedPlan].price}`
     : hasCredits
     ? `使用 1 次 · 解锁完整分析`
     : `购买并解锁 ${PLANS[selectedPlan].price}`;
@@ -66,13 +84,13 @@ export default function PaywallScreen({ navigation }) {
         </TouchableOpacity>
 
         {/* Title */}
-        <Text style={styles.title}>解锁完整分析</Text>
+        <Text style={styles.title}>{topup ? '购买次数' : '解锁完整分析'}</Text>
 
         {/* Credits info */}
         {hasCredits && (
           <View style={styles.creditsCard}>
             <Text style={styles.creditsText}>
-              你还有 {state.credits} 次，可直接使用
+              你还有 {state.credits} 次{topup ? '' : '，可直接使用'}
             </Text>
           </View>
         )}

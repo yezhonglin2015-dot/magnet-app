@@ -86,7 +86,7 @@ export default function MeScreen({ navigation }) {
           <Text style={styles.creditsNum}>{state.credits} 次</Text>
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => navigation.navigate('Paywall')}
+            onPress={() => navigation.navigate('Paywall', { topup: true })}
             style={styles.buyWrapper}
           >
             <LinearGradient
