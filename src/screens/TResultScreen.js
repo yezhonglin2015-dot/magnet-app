@@ -85,7 +85,7 @@ export default function TResultScreen({ navigation }) {
         {/* 针对加分 */}
         {jia.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.plusTitle}>✨ 加分方向</Text>
+            <Text style={styles.plusTitle}>✨ 多放一些</Text>
             {jia.map((item, i) => (
               <View key={i} style={styles.listItem}>
                 <Text style={styles.plusBullet}>＋</Text>
@@ -98,7 +98,7 @@ export default function TResultScreen({ navigation }) {
         {/* 针对先收 */}
         {jian.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.minusTitle}>🍃 先收一收</Text>
+            <Text style={styles.minusTitle}>🍃 少放那些</Text>
             {jian.map((item, i) => (
               <View key={i} style={styles.listItem}>
                 <Text style={styles.minusBullet}>－</Text>
