@@ -84,7 +84,10 @@ export async function analyzeTarget(sessionId, types) {
       signal: controller.signal,
     });
     clearTimeout(timer);
-    if (!res.ok) throw new Error('analyzeTarget failed: ' + res.status);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error || ('analyzeTarget failed: ' + res.status));
+    }
     return res.json();
   } catch (e) {
     clearTimeout(timer);
