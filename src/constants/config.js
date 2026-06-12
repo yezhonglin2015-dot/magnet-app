@@ -2,7 +2,7 @@ export const API_BASE = 'https://us-central1-magnet-app-df7af.cloudfunctions.net
 
 export const PRIVACY_URL = 'https://yezhonglin2015-dot.github.io/magnet-app/privacy.html';
 export const TERMS_URL = 'https://yezhonglin2015-dot.github.io/magnet-app/terms.html';
-export const SUPPORT_EMAIL = 'yezhonglin2015@gmail.com';
+export const SUPPORT_EMAIL = 'byip803@gmail.com';
 
 // App Store Connect 里建好的 3 个 Consumable（ID 占位符已拍板不重建）
 export const PRODUCT_IDS = {

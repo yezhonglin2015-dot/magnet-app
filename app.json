@@ -18,7 +18,8 @@
         "NSPhotoLibraryUsageDescription": "Magnet 需要访问相册来上传你的 IG 主页截图",
         "NSPhotoLibraryAddUsageDescription": "Magnet 需要保存分析结果到相册",
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "buildNumber": "2"
     },
     "android": {
       "package": "com.brianyop.magnet",

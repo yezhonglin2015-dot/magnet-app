@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Constants from 'expo-constants';
 import { useApp } from '../context/AppContext';
 import { colors, grad, spacing, fontSize, radius } from '../constants/theme';
-import { PRIVACY_URL, TERMS_URL, SUPPORT_EMAIL } from '../constants/config';
+import { SUPPORT_EMAIL } from '../constants/config';
 
 export default function MeScreen({ navigation }) {
   const { state, dispatch } = useApp();
@@ -31,12 +31,6 @@ export default function MeScreen({ navigation }) {
       dispatch({ type: 'SET_TYPES', payload: report.selectedTypes });
     }
     navigation.navigate('Base');
-  }
-
-  function openUrl(url) {
-    Linking.openURL(url).catch(() =>
-      Alert.alert('打开失败', '请稍后重试')
-    );
   }
 
   function contact() {
@@ -123,9 +117,9 @@ export default function MeScreen({ navigation }) {
           <Divider />
           <Row label="联系我们" onPress={contact} />
           <Divider />
-          <Row label="隐私政策" onPress={() => openUrl(PRIVACY_URL)} />
+          <Row label="隐私政策" onPress={() => navigation.navigate('Legal', { type: 'privacy' })} />
           <Divider />
-          <Row label="服务条款" onPress={() => openUrl(TERMS_URL)} />
+          <Row label="服务条款" onPress={() => navigation.navigate('Legal', { type: 'terms' })} />
           <Divider />
           <Row label="清除数据" danger onPress={clearData} />
         </View>

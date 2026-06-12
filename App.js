@@ -21,6 +21,7 @@ import AnalyzingTargetScreen from './src/screens/AnalyzingTargetScreen';
 import TResultScreen from './src/screens/TResultScreen';
 import ShareScreen from './src/screens/ShareScreen';
 import MeScreen from './src/screens/MeScreen';
+import LegalScreen from './src/screens/LegalScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -67,6 +68,7 @@ export default function App() {
             <Stack.Screen name="TResult" component={TResultScreen} />
             <Stack.Screen name="Share" component={ShareScreen} />
             <Stack.Screen name="Me" component={MeScreen} />
+            <Stack.Screen name="Legal" component={LegalScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </AppProvider>

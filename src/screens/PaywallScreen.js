@@ -144,7 +144,7 @@ export default function PaywallScreen({ navigation, route }) {
           onPress={() =>
             Alert.alert(
               '恢复购买',
-              '正式上线后将支持 Apple 购买记录恢复。如有疑问请联系 yezhonglin2015@gmail.com'
+              '正式上线后将支持 Apple 购买记录恢复。如有疑问请联系 byip803@gmail.com'
             )
           }
         >
