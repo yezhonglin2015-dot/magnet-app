@@ -37,9 +37,10 @@ export default function TargetScreen({ navigation }) {
   }
 
   function handleConfirm() {
-    // 针对分析在同一次诊断内免费（含重选），扣费只发生在大基础②
+    // 一次诊断 = 一次展示面 + 一次针对分析。用 replace 把选类型页移出栈，
+    // 分析完成后从结果页返回(←/侧滑)只会回到大基础页，不会再回到选类型页重选。
     dispatch({ type: 'SET_TYPES', payload: localSel });
-    navigation.navigate('AnalyzingTarget');
+    navigation.replace('AnalyzingTarget');
   }
 
   function renderItem({ item }) {
