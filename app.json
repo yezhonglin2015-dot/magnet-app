@@ -2,7 +2,7 @@
   "expo": {
     "name": "Magnet",
     "slug": "magnet-ig",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -19,7 +19,7 @@
         "NSPhotoLibraryAddUsageDescription": "Magnet 需要保存分析结果到相册",
         "ITSAppUsesNonExemptEncryption": false
       },
-      "buildNumber": "2"
+      "buildNumber": "3"
     },
     "android": {
       "package": "com.brianyop.magnet",
